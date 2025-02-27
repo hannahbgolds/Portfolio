@@ -1,54 +1,133 @@
 <template>
   <div class="eligibility-page">
-    <header class="header">
-
-      <header class="navbar">
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
       <h1 class="title">Hannah Goldstein - 📁 My Portfolio</h1>
       <button class="menu-button">☰</button>
-      </header>
-
-
     </header>
 
+    <!-- Content -->
     <main class="content">
+      <!-- Fixed Image Rendering -->
+      <!-- <img src="/images/fotoPortfolio.jpg" alt="Pinspot Image" class="logo" /> -->
+
       <h1>Projects</h1>
-      <p>
-        Description 😀
-      </p>
+      <p>Description 😀</p>
 
-      <NuxImg src="/images/background-image.png" alt="Pinspot Image" class="logo" />
-      <!-- <NuxtImg
-        src="images/donation-illustration.png"
-        alt="Ilustração de Doação"
-        class="illustration"
-      /> -->
+      <!-- Project List -->
+      <section
+        v-for="(project, index) in projects"
+        :key="project.nums"
+        class="project-card"
+        :class="{ 'visible': isVisible[index] }"
+        ref="projectRefs"
+      >
+        <div class="project-container">
+          <!-- Text Content Wrapper -->
+          <div class="project-details">
+            <!-- Project Number -->
+            <div class="project-num">
+              <!-- {{ project.nums }} -->
+            </div>
+
+            <!-- Project Category -->
+            <h2 class="project-category">
+              {{ project.category }}
+            </h2>
+
+            <!-- Project Description -->
+            <p class="project-description">
+              {{ project.description }}
+            </p>
+
+            <!-- Tech Stack -->
+            <ul class="stack flex gap-4">
+              <li v-for="tech in project.stack" :key="tech.name" class="tech-item">
+                {{ tech.name }}
+              </li>
+            </ul>
+
+            <!-- Divider Border -->
+            <div class="border border-white/20"></div>
+
+            <!-- Buttons with Tooltip -->
+            <div class="button-container">
+              <a v-if="project.appStore" :href="project.appStore" target="_blank" class="appStore-link">
+                <span class="tooltip">
+                  <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" 
+                    width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="white" 
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 19L19 5M9 5h10v10"/>
+                  </svg>
+                  <span class="tooltiptext">App Store</span>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Project Image (Now Positioned on the Right) -->
+          <img :src="project.image" :alt="project.title" class="project-image" />
+        </div>
+      </section>
+
+      <!-- Slider Section (Placeholder) -->
+      <!-- <div class="slider-container w-full xl:w-[50%]">Slider</div> -->
     </main>
-
-    <!-- <div class="button-container">
-      <button class="register-button" @click="goRegister">
-        Cadastre-se e descubra se pode doar
-      </button>
-      <button class="continue-button" @click="goToIntention">
-        Continuar sem cadastro →
-      </button> -->
-    <!-- </div> -->
   </div>
 </template>
 
+
 <script setup>
-// import { useRouter } from "vue-router";
-// import { redirectToID } from "~/middleware/auth";
+import { ref, onMounted } from "vue";
+import { useIntersectionObserver } from "@vueuse/core";
 
-// const router = useRouter();
+// List of projects
+const projects = ref([
+  {
+    nums: "01",
+    category: "Pinspot",
+    title: "iOS App",
+    description: "PinSpot uses artificial intelligence to transform how we organize our discoveries on social media. This solution allows you to save your favorite spots into folders and easily find them whenever you need.",
+    stack: [{ name: "SwiftUI" }, { name: "DynamoDB" }, { name: "?" }],
+    image: "/images/pinspot1.png",
+    appStore: "https://apps.apple.com/br/app/pinspot-save-and-find/id6654888174?l=en-GB",
+  },
+  {
+    nums: "02",
+    category: "NãoPOD!",
+    title: "iOS App",
+    description: "An iOS app that helps users quit smoking through gamification and habit tracking.",
+    stack: [{ name: "SwiftUI" }, { name: "?" }, { name: "?" }],
+    image: "/images/pinspot1.png",
+    appStore: "https://apps.apple.com/br/app/n%C3%A3opod/id6502217586?l=en-GB",
+  },
+  {
+    nums: "03",
+    category: "Donation Schedule Website",
+    title: "iOS App",
+    description: "An iOS app that helps users quit smoking through gamification and habit tracking.",
+    stack: [{ name: "SwiftUI" }, { name: "?" }, { name: "?" }],
+    image: "/images/pinspot1.png",
+    appStore: "https://github.com/anotherproject",
+  },
+]);
 
-// function goToIntention() {
-//   router.push("/intention");
-// }
+// Refs for tracking project visibility
+const projectRefs = ref([]);
+const isVisible = ref(Array(projects.value.length).fill(false));
 
-// function goRegister() {
-//   // const redirectPath = "/register";
-//   redirectToID("/intention");
-// }
+// Set up intersection observer
+onMounted(() => {
+  projectRefs.value.forEach((project, index) => {
+    useIntersectionObserver(
+      project,
+      ([{ isIntersecting }]) => {
+        isVisible.value[index] = isIntersecting;
+      },
+      { threshold: 0.5 }
+    );
+  });
+});
 </script>
 
 <style scoped>
@@ -57,104 +136,156 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background-color: var(--hemo-color-white);
-  height: 100vh;
+  background-color: var(--hannah-color-blue);
+  height: 300vh;
 }
+
 .logo {
   width: 130px;
-  margin-bottom: 5px;
-  margin-top: 5px;
-}
-.header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: var(--navbar-height);
-  background-color: var(--hemo-color-primary-extra-light);
-}
-
-/* Seção de conteúdo com fundo colorido */
-.content {
-  background-color: var(--hemo-color-primary-extra-light);
-  color: var(--hemo-color-white);
-  padding: 20px;
-  border-bottom-left-radius: 32px;
-  border-bottom-right-radius: 32px;
-  padding-bottom: 100px;
-  width: 100%;
-  height: calc((100vh - var(--navbar-height))*0.8);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-  gap: 16px;
-}
-
-.content h1 {
-  font-size: 2rem;
-  font-weight: bold;
-  margin: 0;
-}
-
-.content p {
-  font-size: 1rem;
-  margin: 0;
-}
-
-.illustration {
-  height: 70%;
-  max-width: 500px;
-  max-height: 500px;
-}
-
-.button-container {
-  background-color: var(--hemo-color-white);
-  padding: 20px 20px 60px;
-  width: 100%;
-  height: calc((100vh - var(--navbar-height))*0.3);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.register-button {
-  background-color: var(--hemo-color-primary-less-light);
-  color: var(--hemo-color-white);
-  padding: 15px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-top: 20px;
-  max-width: 400px;
-  width: 90%;
-}
-
-.continue-button {
-  background: none;
-  color: var(--hemo-color-primary);
-  font-size: 1rem;
-  margin-top: 15px;
-  border: none;
-  cursor: pointer;
+  margin: 5px 0;
 }
 
 .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   height: 60px;
   background-color: #222;
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 0 20px;
 }
 
 .title {
   font-size: 20px;
   font-weight: bold;
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.content {
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.project-card {
+  background: white;
+  /* padding: 10px; */
+  margin: 50px;
+  border-radius: 10px;
+  opacity: 0;
+  transform: translateY(100px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.project-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.project-container {
+  display: flex;
+  justify-content: space-between; /* Space between text & image */
+  align-items: center; /* Align items vertically */
+  gap: 20px; /* Space between text and image */
+  padding: 20px;
+  border-radius: 10px;
+  background: #373535;
+  color: white;
+  text-align: left;
+}
+
+/* Text content remains in a column */
+.project-details {
+  display: flex;
+  flex-direction: column; /* Stack text vertically */
+  flex: 1; /* Take available space */
+}
+
+/* Ensure the image is positioned on the right */
+.project-image {
+  width: 250px; /* Adjust size */
+  height: auto;
+  flex-shrink: 0; /* Prevent resizing */
+  align-self: center; /* Align to center of the row */
+}
+
+
+/* .project-image {
+  width: 200px;
+  height: auto;
+  flex-shrink: 0;
+} */
+
+.stack {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+}
+
+.tech-item {
+  background: lightgray;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.button-container {
+  margin-top: 10px;
+  overflow: visible;
+  margin-bottom: 20px;
+  /* display: flex; */
+}
+
+.appStore-link {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  color: white;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 5px;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 150%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 12px;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.arrow-icon {
+  display: block; /* Ensures it's not inline, avoiding clipping */
+  width: 40px; /* Increase size */
+  height: 40px; /* Increase size */
+  overflow: visible; /* Ensures no clipping */
+}
+
+.slider-container {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  margin-top: 20px;
 }
 </style>
