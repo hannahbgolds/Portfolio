@@ -12,7 +12,8 @@
       <!-- <img src="/images/fotoPortfolio.jpg" alt="Pinspot Image" class="logo" /> -->
 
       <h1>Projects</h1>
-      <p>Description 😀</p>
+      <p>Here are some of my favorite projects—apps and platforms I’ve built to solve real-world problems and push my skills further.</p>
+      <p>Take a look!</p>
 
       <!-- Project List -->
       <section
@@ -88,26 +89,26 @@ const projects = ref([
     category: "Pinspot",
     title: "iOS App",
     description: "PinSpot uses artificial intelligence to transform how we organize our discoveries on social media. This solution allows you to save your favorite spots into folders and easily find them whenever you need.",
-    stack: [{ name: "SwiftUI" }, { name: "DynamoDB" }, { name: "?" }],
-    image: "/images/pinspot1.png",
+    stack: [{ name: "SwiftUI" }, { name: "DynamoDB" }],
+    image: "/images/pinspot.png",
     appStore: "https://apps.apple.com/br/app/pinspot-save-and-find/id6654888174?l=en-GB",
   },
   {
     nums: "02",
     category: "NãoPOD!",
     title: "iOS App",
-    description: "An iOS app that helps users quit smoking through gamification and habit tracking.",
-    stack: [{ name: "SwiftUI" }, { name: "?" }, { name: "?" }],
+    description: "A gamified iOS app designed to help users quit vaping by tracking their habits, setting reduction goals, and visualizing progress. Through an interactive experience, users stay motivated on their journey to a healthier life.",
+    stack: [{ name: "SwiftUI" }],
     image: "/images/pinspot1.png",
     appStore: "https://apps.apple.com/br/app/n%C3%A3opod/id6502217586?l=en-GB",
   },
   {
     nums: "03",
-    category: "Donation Schedule Website",
+    category: "Donation Eligibility Quiz",
     title: "iOS App",
-    description: "An iOS app that helps users quit smoking through gamification and habit tracking.",
-    stack: [{ name: "SwiftUI" }, { name: "?" }, { name: "?" }],
-    image: "/images/pinspot1.png",
+    description: "An interactive web platform that helps users determine their eligibility for blood donation through a simple quiz. By answering a few questions, users receive instant feedback on whether they can donate, streamlining the donation process.",
+    stack: [{ name: "Vue.js" }, { name: "Nuxt.js" }, { name: "MongoDB" }],
+    image: "/images/canDonate.png",
     appStore: "https://github.com/anotherproject",
   },
 ]);
